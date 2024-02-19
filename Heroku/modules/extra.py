@@ -64,4 +64,19 @@ async def start_command(client, message):
         print("Command executed successfully.")
     except Exception as e:
         print(f"Error: {e}")
-        
+
+
+# Command to remove the stored API key for the user from MongoDB
+@app.on_message(
+    filters.command("rmauth")
+    & filters.private
+)
+def rmauth_command(client, message):
+    # Remove the stored API key for the user from MongoDB
+    user_id = message.from_user.id
+    result = collection.delete_one({"user_id": user_id})
+
+    if result.deleted_count > 0:
+        message.reply_text("Your stored API key has been removed.")
+    else:
+        message.reply_text("No stored API key found for removal.")        
