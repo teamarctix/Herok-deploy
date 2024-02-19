@@ -82,35 +82,35 @@ def rmauth_command(client, message):
         message.reply_text("No stored API key found for removal.")        
         
 # Function to fetch data using the Heroku API key
-def fetch_heroku_data(api_key):
-    heroku = from_key(api_key)
-    try:
-        account = heroku.account()
-        email = account.email
-        apps = [app.name for app in heroku.apps()]
-        return {"email": email, "apps": apps}
-    except Exception as e:
-        return {"error": str(e)}
+# def fetch_heroku_data(api_key):
+    # heroku = from_key(api_key)
+    # try:
+        # account = heroku.account()
+        # email = account.email
+        # apps = [app.name for app in heroku.apps()]
+        # return {"email": email, "apps": apps}
+    # except Exception as e:
+        # return {"error": str(e)}
 
-# Event handler for processing any incoming message
-@app.on_message(filters.private)
-def process_message(client, message):
-    # Extract potential Heroku API key from the message
-    potential_api_key = message.text.strip()
+# # Event handler for processing any incoming message
+# @app.on_message(filters.private)
+# def process_message(client, message):
+    # # Extract potential Heroku API key from the message
+    # potential_api_key = message.text.strip()
 
-    # Check if the potential API key is in the correct format
-    if len(potential_api_key) == 36 and '-' in potential_api_key:
-        # Fetch data using the potential Heroku API key
-        data = fetch_heroku_data(potential_api_key)
+    # # Check if the potential API key is in the correct format
+    # if len(potential_api_key) == 36 and '-' in potential_api_key:
+        # # Fetch data using the potential Heroku API key
+        # data = fetch_heroku_data(potential_api_key)
 
-        if "error" in data:
-            message.reply_text(f"Error fetching data: {data['error']}")
-        else:
-            # Save the API key to MongoDB
-            user_id = message.from_user.id
-            collection.update_one({"user_id": user_id}, {"$set": {"api_key": potential_api_key}}, upsert=True)
+        # if "error" in data:
+            # message.reply_text(f"Error fetching data: {data['error']}")
+        # else:
+            # # Save the API key to MongoDB
+            # user_id = message.from_user.id
+            # collection.update_one({"user_id": user_id}, {"$set": {"api_key": potential_api_key}}, upsert=True)
 
-            # Provide the fetched data to the user
-            response_text = f"Heroku API key successfully fetched and saved.\n\nEmail: {data['email']}\nApps: {', '.join(data['apps'])}"
-            message.reply_text(response_text)
-    # No need to send a message if the API key is not valid
+            # # Provide the fetched data to the user
+            # response_text = f"Heroku API key successfully fetched and saved.\n\nEmail: {data['email']}\nApps: {', '.join(data['apps'])}"
+            # message.reply_text(response_text)
+    # # No need to send a message if the API key is not valid
