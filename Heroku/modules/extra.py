@@ -113,6 +113,4 @@ def process_message(client, message):
             # Provide the fetched data to the user
             response_text = f"Heroku API key successfully fetched and saved.\n\nEmail: {data['email']}\nApps: {', '.join(data['apps'])}"
             message.reply_text(response_text)
-    else:
-        message.reply_text("No valid Heroku API key found in the message.")
-        
+    # No need to send a message if the API key is not valid
