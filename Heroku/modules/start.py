@@ -17,18 +17,13 @@ START_BUTTONS = [
     ]
 ]
 
-
 @app.on_message(
     filters.command("start")
     & filters.private
 )
 async def start_command(client, message):
     try:
-        await message.reply(
-                    text = START_MESSAGE,
-                    reply_markup = InlineKeyboardMarkup(START_BUTTONS)
-        )
+        await message.reply_text(START_MESSAGE, reply_markup=InlineKeyboardMarkup(START_BUTTONS))
         
     except Exception as e:
         print(f"Error: {e}")
-        
