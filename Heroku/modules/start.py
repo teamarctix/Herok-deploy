@@ -27,3 +27,16 @@ async def start_command(client, message):
         
     except Exception as e:
         print(f"Error: {e}")
+        
+@app.on_callback_query()
+async def callback_query(client, CallbackQuery):
+        if CallbackQuery.data == "MORE":
+           END_BUTTON = [
+           [
+             InlineKeyboardButton('MENU', callback_data="Go to Menu")
+             InlineKeyboardButton('MENU', callback_data="Go to Menu")
+           ]
+           ]
+           CallbackQuery.edit_message_text(
+               START_MESSAGE,
+               reply_markup = InlineKeyboardMarkup(END_BUTTON)
