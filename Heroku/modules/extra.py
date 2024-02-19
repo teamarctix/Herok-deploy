@@ -86,7 +86,7 @@ def fetch_heroku_data(api_key):
     heroku = from_key(api_key)
     try:
         account = heroku.account()
-        email = account.email()
+        email = account.email
         apps = [app.name for app in heroku.apps()]
         return {"email": email, "apps": apps}
     except Exception as e:
