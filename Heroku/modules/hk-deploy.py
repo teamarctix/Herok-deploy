@@ -24,16 +24,16 @@ def link(client, message):
     # Send the message with text and reply_markup
     message.reply_text(text, reply_markup=reply_markup)
 
-@app.on_message(
-    filters.command("start")
-    & filters.private
-)
-async def start_command(client, message):
-    try:
-        await message.reply_text("Hi! This is a reply message.")
-        print("Command executed successfully.")
-    except Exception as e:
-        print(f"Error: {e}")
+# @app.on_message(
+    # filters.command("start")
+    # & filters.private
+# )
+# async def start_command(client, message):
+    # try:
+        # await message.reply_text("Hi! This is a reply message.")
+        # print("Command executed successfully.")
+    # except Exception as e:
+        # print(f"Error: {e}")
 
 
 # Command to save API key to a temporary file
