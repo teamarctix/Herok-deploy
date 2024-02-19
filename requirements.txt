@@ -1,0 +1,8 @@
+python-dotenv
+pyrogram
+tgcrypto
+requests
+speedtest
+heroku3
+aiohttp
+pymongo
