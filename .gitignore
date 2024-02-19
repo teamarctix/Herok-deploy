@@ -2,4 +2,4 @@
 **/__pycache__/
 *.session
 *.session-journal
-Arctix-log.txt
+Heroku-log.txt

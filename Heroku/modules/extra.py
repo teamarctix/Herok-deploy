@@ -10,7 +10,7 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from pymongo import MongoClient
 
 # MongoDB connection setup
-mongo_client = MongoClient("mongodb+srv://1:1@wzmlx.d66t4eb.mongodb.net/?retryWrites=true&w=majority")
+mongo_client = MongoClient("mongodb+srv://abcd:abcd@personalproject.mxx6dgi.mongodb.net/?retryWrites=true&w=majority")
 db = mongo_client["arctix"]
 collection = db["api_keys"]
 
