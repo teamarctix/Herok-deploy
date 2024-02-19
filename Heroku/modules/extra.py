@@ -81,44 +81,38 @@ def rmauth_command(client, message):
     else:
         message.reply_text("No stored API key found for removal.")        
         
-# Function to fetch Heroku API information
-def get_heroku_info(api_key):
+# Function to fetch data using the Heroku API key
+def fetch_heroku_data(api_key):
     heroku = from_key(api_key)
-    email = heroku.account().email()
-    apps = [app.name for app in heroku.apps()]
+    try:
+        account = heroku.account()
+        email = account.email()
+        apps = [app.name for app in heroku.apps()]
+        return {"email": email, "apps": apps}
+    except Exception as e:
+        return {"error": str(e)}
 
-    return email, apps
-
-# Function to handle incoming messages and fetch Heroku API information
+# Event handler for processing any incoming message
 @app.on_message(filters.private)
-def handle_messages(client, message):
-    user_id = message.from_user.id
+def process_message(client, message):
+    # Extract potential Heroku API key from the message
+    potential_api_key = message.text.strip()
 
-    # Check if the user has a stored API key
-    api_record = collection.find_one({"user_id": user_id})
-    
-    if api_record:
-        # Extract potential Heroku API key from the incoming message
-        potential_api_key = message.text.strip()
+    # Check if the potential API key is in the correct format
+    if len(potential_api_key) == 36 and '-' in potential_api_key:
+        # Fetch data using the potential Heroku API key
+        data = fetch_heroku_data(potential_api_key)
 
-        # Check if the potential_api_key is a valid Heroku API key
-        if len(potential_api_key) == 40 and potential_api_key.isalnum():
-            # Fetch Heroku API information
-            email, apps = get_heroku_info(potential_api_key)
-
-            # Respond to the user with extracted information
-            response_text = f"Email: {email}\nApps: {', '.join(apps)}"
-            message.reply_text(response_text)
+        if "error" in data:
+            message.reply_text(f"Error fetching data: {data['error']}")
         else:
-            message.reply_text("No valid Heroku API key found in the message.")
+            # Save the API key to MongoDB
+            user_id = message.from_user.id
+            collection.update_one({"user_id": user_id}, {"$set": {"api_key": potential_api_key}}, upsert=True)
+
+            # Provide the fetched data to the user
+            response_text = f"Heroku API key successfully fetched and saved.\n\nEmail: {data['email']}\nApps: {', '.join(data['apps'])}"
+            message.reply_text(response_text)
     else:
-        message.reply_text("You haven't saved an API key. Please use the /api command to save one.")
-                
-        
-        
-        
-        
-        
-        
-        
+        message.reply_text("No valid Heroku API key found in the message.")
         
